@@ -3,28 +3,15 @@ echo Moflex Helper
 set /p "title=Project Name: "
 if exist "output\%title%\" (
     echo "output\%title%\" folder already exists, will delete the folder. Ok?
-    pause
-    RD /q /s "output\%title%"
+    pause>nul
+    rd /q /s "output\%title%"
 )
 md "output\%title%\"
 md "input\%title%\"
 xcopy "template\*" "output\%title%\" /e /i /y >nul
 cls
-echo VoodooChaos will open next.
-echo Click the button "Open Exheader File" then go to the directory:
-echo "output\%title%\"
-echo and open up the "DecryptedExHeader.bin" file.
-echo Now where it says "New Unique ID" put in your desired Title ID
-echo (must be 0-9 and/or A-F) then press "Save Exheader File" and close VoodooChaos.
-echo Then come back here.
-echo Press Enter To Continue...
-pause>nul
-"tools\VoodooChaos.exe"
-cls
-echo Press Enter To Continue...
-pause>nul
-cls
 echo Mobiclip will open next with a preloaded template.
+echo Press Enter To Continue...
 echo Open up your video files by double-clicking "Video Files" and then "Browse".
 echo You can then select the +/- button to select multiple files on that directory
 echo if you have more than one video. Then press ok. Next double-click
@@ -32,7 +19,6 @@ echo "Mobiclip Encoder" and select your output directory of where you would like
 echo save your moflex videos. Then press ok. Next press "Queue Job" and click on the
 echo "Progress" tab and wait until the process has been completed.
 echo Then close Mobiclip and come back here.
-echo Press Enter To Continue...
 pause>nul
 "tools\3ds_template.mograph"
 cls
@@ -60,8 +46,9 @@ echo Press Enter To Continue...
 pause>nul
 copy "tools\movie_.bimg" "input\%title%\"
 cls
-echo BIMG-PGN converter will open next. Click on "RGB565".
-echo Click on open "Open bimg file"
+echo BIMG-PGN converter will open next.
+echo Press Enter To Continue...
+echo Click on "RGB565" and then Click on open "Open bimg file"
 echo inside the "input\%title%\" folder you will find a "movie_.bimg" file open that.
 echo Then click on "import bitmap" and open up your image that you edited before.
 echo Now press "save bimg file". Save them in the "input\%title%\" folder
@@ -72,21 +59,34 @@ echo movie_0.moflex, movie_0.bimg, movie_1.moflex, movie_1.bimg and so on...
 echo You may choose to use a different image on your bimg file for each video or
 echo you could just use the same one for all.
 echo close BIMG-PGN and come back here.
-echo Press Enter To Continue...
 pause>nul
 "tools\BIMG-PGN Converter.exe"
 cls
 echo Press Enter To Continue...
 pause>nul
 cls
+echo VoodooChaos will open next.
+echo Press Enter To Continue...
+echo Click the button "Open Exheader File" then go to the directory:
+echo "output\%title%\"
+echo and open up the "DecryptedExHeader.bin" file.
+echo Now where it says "New Unique ID" put in your desired Title ID
+echo (only characters 0-9 and/or A-F can be used) then press "Save Exheader File"
+echo Then close VoodooChaos and come back here.
+pause>nul
+"tools\VoodooChaos.exe"
+cls
+echo Press Enter To Continue...
+pause>nul
+cls
 echo Notepad++ will open the "movie_title.csv" file next.
+echo Press Enter To Continue...
 echo Edit the file to the text you would like each video to be called.
 echo You may notice the text is repeated 12 times for each video. This is because
 echo each one represents a different language. You may choose to write it in
 echo different languages or you could just leave it the same for each. To do so you
 echo could just find and replace. Remember to save.
 echo Then close Notepad++ and come back here.
-echo Press Enter To Continue...
 pause>nul
 "tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\movie\movie_title.csv"
 cls
@@ -94,6 +94,7 @@ echo Press Enter To Continue...
 pause>nul
 cls
 echo Notepad++ will open the "movie_bnrname.csv" file next.
+echo Press Enter To Continue...
 echo Set the first line to the number of videos you are using.
 echo The next set of lines are the names of the .bimg files that will be included.
 echo These are placed separately on each line. So add or remove the number of bimg
@@ -101,23 +102,22 @@ echo you got. Remember to save.
 echo Then close Notepad++ and come back here.
 echo Press Enter To Continue...
 pause>nul
-"tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\movie\movie_bnrname.csv"
+"tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\settings\movie_bnrname.csv"
 cls
-echo Press Enter To Continue...
 pause>nul
 cls
 echo Notepad++ will open the "settingsTL.csv" file next.
+echo Press Enter To Continue...
 echo now on line 38 you will see some Japanese text
 echo Below that are texts that will show up on your top screen below thumbnail.
 echo Below some Japanese text on line 75, you put the your title ID
-echo that you put at the beginning when editing the "DecryptedExHeader.bin" file
-echo using VoodooChaos.
+echo that you put previously when editing the "DecryptedExHeader.bin" file
+echo using VoodooChaos. Which are the last 5 digits.
 echo Then below some Japanese text on line 96, you set that to the number of
 echo videos you are using. Remember to save.
 echo Then close Notepad++ and come back here.
-echo Press Enter To Continue...
 pause>nul
-"tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\movie\settingsTL.csv"
+"tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\settings\settingsTL.csv"
 cls
 echo Press Enter To Continue...
 pause>nul
@@ -143,17 +143,37 @@ set /p "lt=Long Title: "
 set /p "pub=Publisher: "
 bannertool.exe makesmdh -s "%st%" -l "%lt%" -p "%pub%" -i icon.png -o icon.bin
 cd..
-cls
-pause>nul
 move "tools\banner.png" "input\%title%"
 move "tools\banner.wav" "input\%title%"
 move "tools\icon.png" "input\%title%"
-del "output\%title%\ExtractedExeFS\banner.bin"
-del "output\%title%\ExtractedExeFS\icon.bin"
-del "output\%title%\ExtractedRomFS\icon.icn"
 move "tools\banner.bin" "output\%title%\ExtractedExeFS"
 move "tools\icon.bin" "output\%title%\ExtractedExeFS"
 copy "output\%title%\ExtractedExeFS\icon.bin" "output\%title%\ExtractedRomFS\icon.icn"
 cls
 echo Press Enter To Continue...
 Pause>nul
+cls
+echo 3DSBuilder will open next
+echo Press Enter To Continue...
+echo Now you need to locate the paths and files.
+echo For each one you may manually locate them by pressing on the buttons and going
+echo to them directly or you could just copy and paste the paths from file explorer
+echo to their correct boxes.
+echo For Romfs locate it to "output\%title%\ExtractedRomFS"
+echo For Exefs locate it to "output\%title%\ExtractedExeFS"
+echo For Exheader locate it to "output\%title%\DecryptedExHeader.bin"
+echo If you get prompted by something just press no.
+echo Choose the save location to "CiaConvert\roms" and name it as anything but make
+echo sure you add the .3ds extension on the end.
+echo Change the "XXXX" inside the seriel box to anything you want.
+echo Then close 3DSBuilder and come back here.
+pause>nul
+"tools\3DSBuilder.exe"
+cls
+echo Press Enter To Continue...
+pause>nul
+cls
+del "input\%title%\movie_.bimg"
+move "input\%title%\*.bimg" "output\%title%\ExtractedRomFS\movie"
+move "input\%title%\*.moflex" "output\%title%\ExtractedRomFS\movie"
+cls
