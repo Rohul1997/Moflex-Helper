@@ -1,5 +1,8 @@
 @echo off
-echo Moflex Helper
+ECHO .........................................
+echo .    Moflex Helper      By Rohul1997    .
+ECHO .........................................
+ECHO.
 set /p "title=Project Name: "
 if exist "output\%title%\" (
     echo "output\%title%\" folder already exists, will delete the folder. Ok?
@@ -90,7 +93,8 @@ echo Edit the file to the text you would like each video to be called.
 echo You may notice the text is repeated 12 times for each video. This is because
 echo each one represents a different language. You may choose to write it in
 echo different languages or you could just leave it the same for each. To do so you
-echo could just find and replace. Remember to save.
+echo could just find and replace. Make sure you do not use a comma (,) for your text.
+echo There should only be 1 comma separating each one. Remember to save.
 echo Then close Notepad++ and come back here.
 "tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\movie\movie_title.csv"
 cls
@@ -108,6 +112,7 @@ echo you got. Remember to save.
 echo Then close Notepad++ and come back here.
 "tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\settings\movie_bnrname.csv"
 cls
+echo Press Enter To Continue...
 pause>nul
 cls
 echo Notepad++ will open the "settingsTL.csv" file next.
@@ -182,7 +187,6 @@ echo Then close 3DSBuilder and come back here.
 cls
 echo Press Enter To Continue...
 pause>nul
-
 cls
 echo 3ds_simple_cia will open next
 echo Press Enter To Continue...
@@ -194,8 +198,6 @@ echo and use Decrypt9 to create Xorpads. After that back on your PC copy the Xor
 echo on to the "CiaConvert\xorpads" folder. Then on 3ds_simple_cia click on
 echo "Convert 3DS ROM to CIA" and use the folder "CiaConvert\roms" Now wait for it to
 echo complete converting to a CIA file. You should see prompt that says "Finished".
-echo For Exheader locate it to "output\%title%\DecryptedExHeader.bin"
-echo If you get prompted by something just press no.
 echo After that close 3ds_simple_cia and come back here.
 "CiaConvert\3ds_simple_cia.exe"
 cls
@@ -204,3 +206,5 @@ pause>nul
 cls
 echo Your converted CIA file should be inside the "CiaConvert\cia" folder.
 echo That should be your Moflex CIA. Now to install and test on your 3DS.
+echo Press Enter To Close...
+Pause>nul
