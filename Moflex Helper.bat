@@ -142,7 +142,6 @@ echo "banner.wav"
 echo Once your done come back here
 echo Press Enter To Continue...
 pause>nul
-ren "input\%title%\*.wav" "banner.wav"
 move "input\%title%\banner.png" "tools"
 move "input\%title%\banner.wav" "tools"
 move "input\%title%\icon.png" "tools"
