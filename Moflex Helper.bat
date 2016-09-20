@@ -132,16 +132,23 @@ cls
 echo Press Enter To Continue...
 pause>nul
 cls
-echo Now put a png image inside "input\%title%\" for the banner. Which should be
-echo 256x128 and name it as "banner.png"
-echo Also put a png image inside "input\%title%\" for the icon. Which should be
-echo 48x48 and name it as "icon.png"
+echo Now put a png image inside "input\%title%\" for the banner.
+echo Name it as "banner.png"
+echo Also put a png image inside "input\%title%\" for the icon. Name it as "icon.png"
 echo Also put a wav sound file inside "input\%title%\" for the banner sound.
 echo This should be about 3 seconds long. Use Audacity to make one and name it as
 echo "banner.wav"
 echo Once your done come back here
 echo Press Enter To Continue...
 pause>nul
+"tools\convert" "input\%title%\banner.png" -resize 196x101! "input\%title%\tempbanner.png"
+del "input\%title%\banner.png"
+"tools\convert" "tools\TemplateBanner.png" "input\%title%\tempbanner.png" -geometry +30+8 -composite "input\%title%\banner.png"
+del "input\%title%\tempbanner.png"
+"tools\convert" "input\%title%\icon.png" -resize 38x38! "input\%title%\tempicon.png"
+del "input\%title%\icon.png"
+"tools\convert" "tools\TemplateIcon.png" "input\%title%\tempicon.png" -gravity center -composite "input\%title%\icon.png"
+del "input\%title%\tempicon.png"
 ren "input\%title%\*.wav" "banner.wav"
 move "input\%title%\banner.png" "tools"
 move "input\%title%\banner.wav" "tools"
