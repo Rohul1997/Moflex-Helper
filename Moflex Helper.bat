@@ -1,9 +1,20 @@
 @echo off
+:: Test for Adminrights
+FSUTIL >NUL 2>&1
+if ERRORLEVEL 1 (
+    color CF
+    cls
+    echo Access Denied, Installation Aborted....
+    echo Run this Program with Administrator Privileges.
+    pause
+    color 0F
+    exit
+)
 color 0e
-ECHO .........................................
+echo .........................................
 echo .    Moflex Helper      By Rohul1997    .
-ECHO .........................................
-ECHO.
+echo .........................................
+echo.
 set /p "title=Project Name: "
 if exist "output\%title%\" (
     echo "output\%title%\" folder already exists, will delete the folder. Ok?
@@ -43,7 +54,7 @@ echo.
 echo THIS MAY TAKE A LONG TIME! Please Be Patient,
 echo.
 echo INFO:
-echo You can Check the Progress on the "Jobs" and "Progress" Tabs.
+echo You can Check the Progress on the "Jobs Queue" and "Progress" Tabs.
 echo When finished, close Mobiclip and come back here.
 "tools\3ds_template.mograph"
 cls
@@ -63,26 +74,37 @@ echo CAREFULL!!! (its easy to get confused here!)
 echo.
 echo Press Enter To Continue...
 pause>nul
-copy "tools\template.png" "input\%title%\"
 cls
 echo INFO:
 echo Now you need bimg file(s). Which are thumbnail images.
 echo They appear on the top screen of the 3DS when selecting a video.
 echo.
 echo Step 1
-echo Go to the "Moflex Helper\input\%title%\" folder
-echo and you will find a "template.png" file.
-echo Open and edit the image file with your own image
-echo.
-echo INFO:
-echo Paste and resize your image into the empty box, within the template,
-echo leave the black boarder alone!
-echo CAUTION!
-echo 1 pixel out of place ruins it all!
-echo On the top-left where it is blank, thats where your image must be. Then save.
+echo Copy all of your png files that you would like to use as your bimg images to the
+echo "Moflex Helper\input\%title%\" folder
 echo.
 echo Press Enter To Continue...
 pause>nul
+cls
+:bimg
+cls
+echo Type in the name of the image that you
+echo would like to use as a bimg image (without the file extension)
+echo.
+set /p "bimg=Name of image to be used as a bimg image (without file extension): "
+"tools\convert" "input\%title%\%bimg%.png" -resize 200x120! "input\%title%\%bimg%0.png"
+del "input\%title%\%bimg%.png"
+"tools\convert" "tools\TemplateBimg.png" "input\%title%\%bimg%0.png" -geometry +0+0 -composite "input\%title%\%bimg%.png"
+del "input\%title%\%bimg%0.png"
+cls
+echo Would you like to use a different image to make a different bimg image?
+echo A - Yes
+echo B - No
+echo.
+choice /C AB /M "Enter the letter of your choice:"
+if ERRORLEVEL 2 goto continue
+if ERRORLEVEL 1 goto bimg
+:continue
 copy "tools\movie_.bimg" "input\%title%\"
 cls
 echo BIMG-PGN Converter will open next.
@@ -91,11 +113,12 @@ echo Press Enter To Continue...
 pause>nul
 cls
 echo Step 1.
-echo Click on "RGB565" and then Click on open "Open bimg file"
+echo Click on open "Open bimg file"
 echo in the "Moflex Helper\input\%title%\" folder you will find a "movie_.bimg" file open that.
 echo.
 echo Step 2.
-echo Click "import bitmap" and open up the image that you edited before.
+echo Click on "RGB565"
+echo Click "import bitmap" and open up the image that got created before.
 echo.
 echo Step 3
 echo Click "save bimg file". Save in the "Moflex Helper\input\%title%\" folder.
@@ -126,16 +149,23 @@ cls
 echo Step 1
 echo Click the "Open Exheader File" button, then go to the directory:
 echo "Moflex Helper\output\%title%\"
-echo open up the "DecryptedExHeader.bin" file.
+echo open up the "ExHeader.bin" file.
 echo.
 echo Step 2.
 echo Where it says "New Unique ID" put in your desired Title ID
 echo (only characters 0-9 and/or A-F can be used. Must be 6 Characters long!
 echo Must start with "00" the other four numbers are yours to choose)
+echo For example, "0011DF"
 echo then press "Save Exheader File"
 echo.
 echo Close VoodooChaos and come back here.
 "tools\VoodooChaos.exe"
+cls
+echo Tell me what Title ID you used on VoodooChaos
+echo so I can tell you what to write later on.
+echo Note: make you sure type it correctly or else it will cause problems.
+echo.
+set /p "uid=Title ID: "
 cls
 echo Press Enter To Continue...
 pause>nul
@@ -164,7 +194,7 @@ echo There should only be 1 comma separating each one... no space.
 echo.
 echo Remember to save.
 echo Then close Notepad++ and come back here.
-"tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\movie\movie_title.csv"
+"tools\Notepad++\notepad++.exe" "output\%title%\RomFS\movie\movie_title.csv"
 cls
 echo Press Enter To Continue...
 pause>nul
@@ -183,7 +213,7 @@ echo These are placed separately on each line. So add or remove the number of bi
 echo you have. Remember to save.
 echo.
 echo Then close Notepad++ and come back here.
-"tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\settings\movie_bnrname.csv"
+"tools\Notepad++\notepad++.exe" "output\%title%\RomFS\settings\movie_bnrname.csv"
 cls
 echo Press Enter To Continue...
 pause>nul
@@ -203,8 +233,7 @@ echo on line 76, you put the your title ID
 echo (Must be a 5 digit hex number begining with "0". I.E. "011DF")
 echo.
 echo INFO:
-echo This MUST be the same as the Title ID from the "DecryptedExHeader.bin"
-echo file you edited earlyer using VoodooChaos.
+echo You put "%uid%" on VoodooChaos so you should put the last 5 characters of that.
 echo If the number there was "0011DF"
 echo then the number here must be "011DF"
 echo.
@@ -213,7 +242,7 @@ echo On Line 97, Set the Number the the amount of videos you are using.
 echo Remember to save.
 echo.
 echo Then close Notepad++ and come back here.
-"tools\Notepad++\notepad++.exe" "output\%title%\ExtractedRomFS\settings\settingsTL.csv"
+"tools\Notepad++\notepad++.exe" "output\%title%\RomFS\settings\settingsTL.csv"
 cls
 echo Press Enter To Continue...
 pause>nul
@@ -226,7 +255,8 @@ echo Also put a wav sound file inside "input\%title%\" for the banner sound.
 echo.
 echo INFO:
 echo This should only be 3 seconds or less.
-echo Use Audacity to make one (Check the "Moflex Helper\Extras" Folder for the Installer + Plugins)
+echo Use Audacity to make one
+echo (Check the "Moflex Helper\tools\Audacity" Folder for the Installer + Plugins)
 echo and save it as "banner.wav"
 echo.
 echo Once your done come back here
@@ -256,87 +286,34 @@ cd..
 move "tools\banner.png" "input\%title%"
 move "tools\banner.wav" "input\%title%"
 move "tools\icon.png" "input\%title%"
-move "tools\banner.bin" "output\%title%\ExtractedExeFS"
-move "tools\icon.bin" "output\%title%\ExtractedExeFS"
-copy "output\%title%\ExtractedExeFS\icon.bin" "output\%title%\ExtractedRomFS\icon.icn"
+move "tools\banner.bin" "output\%title%\ExeFS"
+move "tools\icon.bin" "output\%title%\ExeFS"
+copy "output\%title%\ExeFS\icon.bin" "output\%title%\RomFS\icon.icn"
 del "input\%title%\movie_.bimg"
-move "input\%title%\*.bimg" "output\%title%\ExtractedRomFS\movie"
-move "input\%title%\*.moflex" "output\%title%\ExtractedRomFS\movie"
+move "input\%title%\*.bimg" "output\%title%\RomFS\movie"
+move "input\%title%\*.moflex" "output\%title%\RomFS\movie"
 cls
 echo Press Enter To Continue...
 Pause>nul
+"tools\3dstool.exe" -t romfs -c --romfs-dir "output\%title%\RomFS" -f "output\%title%\romfs.bin"
 cls
-echo 3DSBuilder will open next
+echo Type in your desired serial ID. for example "CTR-N-XXXX". "XXXX" can be anything
+echo you want it to be. Make sure type the "CTR-N-" followed by your own ID.
 echo.
+set /p "sid=Serial ID: "
+cls
+echo the CIA file will begin building next
 echo Press Enter To Continue...
-pause>nul
+Pause>nul
 cls
-echo Step 1
-echo You need to locate the Folders and Files.
-echo For each one, click the buttons and find the Folders
-echo (for ExtractedRomFS and ExtractedExeFS)
-echo and file (for DecryptedExHeader.bin)
-echo.
-echo INFO:
-echo Navigate directly or just copy and paste the file paths from explorer
-echo to their correct boxes.
-echo.
-echo For Romfs locate it to "output\%title%\ExtractedRomFS"
-echo For Exefs locate it to "output\%title%\ExtractedExeFS"
-echo For Exheader locate it to "output\%title%\DecryptedExHeader.bin"
-echo.
-echo If you get prompted by something just press no.
-echo Choose the save location to "Moflex Helper\CiaConvert\roms"
-echo and name it as anything but make
-echo sure you add the ".3ds" extension on the end.
-echo.
-Echo Step 2
-echo Change the "XXXX" inside the seriel box to anything you want.
-echo Then press "Go" and wait for it to complete building the .3DS file.
-echo.
-echo Then close 3DSBuilder and come back here.
-"tools\3DSBuilder.exe"
+echo Building cia....
+echo Please wait....
+"tools\makerom.exe" -f cia -target t -rsf "tools\custom.rsf" -o "output\%title%.cia" -icon "output\%title%\ExeFS\icon.bin" -code "output\%title%\ExeFS\code.bin" -banner "output\%title%\ExeFS\banner.bin" -exheader "output\%title%\ExHeader.bin" -romfs "output\%title%\romfs.bin" -DAPP_TITLE="%st%" -DAPP_PRODUCT_CODE="%sid%" -DAPP_UNIQUE_ID="0x%uid%"
 cls
-echo Press Enter To Continue...
-pause>nul
-cls
-echo 3ds_simple_cia will open next
-echo.
-echo Press Enter To Continue...
-pause>nul
-cls
-echo Step 1.
-echo Click on "Create 'ncchinfo.bin' file".
-echo Then use the folder "Moflex Helper\CiaConvert\roms"
-echo and then save the "ncchinfo.bin" file.
-echo.
-echo Step 2.
-echo Copy that nchinfo.bin file onto your 3DSs SD Card,
-echo insert into 3DS and use Decrypt9 to create Xorpads.
-echo.
-echo Step 3.
-echo copy the Xorpads to the "Moflex Helper\CiaConvert\xorpads" folder.
-echo Then on 3ds_simple_cia click on
-echo "Convert 3DS ROM to CIA" and use the folder "Moflex Helper\CiaConvert\roms"
-echo.
-echo Step 4.
-echo Now wait for it to complete converting to a CIA file.
-echo You should eventually see prompt that says "Finished".
-echo.
-echo INFO:
-echo (Until this moment, it can appear
-echo that the convert has crashed/frozen, do not panic,
-echo just leave it, it can take a while!)
-echo.
-echo After that close 3ds_simple_cia and come back here.
-"CiaConvert\3ds_simple_cia.exe"
-cls
-echo Press Enter To Continue...
-pause>nul
-cls
-echo Your converted CIA file will be inside the
-echo "Moflex Helper\CiaConvert\cia" folder.
+echo CIA successfully built!
+echo Your built CIA file should be inside "output\%title%.cia"
 echo Now to install and test on your 3DS.
 echo.
-echo Press Enter To Close...
+echo Press Enter To Open CIA Output Folder And Close Program...
 Pause>nul
+start output
