@@ -163,7 +163,7 @@ echo Close VoodooChaos and come back here.
 cls
 echo Tell me what Title ID you used on VoodooChaos
 echo so I can tell you what to write later on.
-echo Note: make you sure type it correctly or else it will cause problems.
+echo Note: make sure you type it correctly or else it will cause problems.
 echo.
 set /p "uid=Title ID: "
 cls
@@ -295,6 +295,17 @@ move "input\%title%\*.moflex" "output\%title%\RomFS\movie"
 cls
 echo Press Enter To Continue...
 Pause>nul
+cls
+echo Romfs.bin file will be built next.
+echo Press Enter To Continue...
+Pause>nul
+cls
+echo Romfs.bin file is being built. This may take a couple of minutes.
+echo Please wait and do not press anything.
+echo If you see the following meesage then dont worry about it just ignore it:
+echo ERROR: open file C:/Moflex Helper/tools/ignore_3dstool.txt failed
+echo Building Romfs....
+echo.
 "tools\3dstool.exe" -t romfs -c --romfs-dir "output\%title%\RomFS" -f "output\%title%\romfs.bin"
 cls
 echo Type in your desired serial ID. for example "CTR-N-XXXX". "XXXX" can be anything
