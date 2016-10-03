@@ -42,7 +42,7 @@ echo INFO:
 echo Use the +/- button to select multiple files of a given directory. Press OK.
 echo.
 echo Step 3.
-echo Double-click the Red "Mobiclip Encoder" Box.
+echo Double-click the "Mobiclip Encoder" Box.
 echo.
 echo Step 4.
 echo Select your output directory of your file/s
@@ -227,6 +227,7 @@ echo Step 1
 echo On line 38 you will see some Japanese text
 echo Below that are texts that will show up on your top screen below thumbnail.
 echo Change them to what you want, but they all have to be the same.
+echo The "\n" means new line.
 echo.
 echo Step 2
 echo on line 76, you put the your title ID
