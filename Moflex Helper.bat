@@ -25,6 +25,15 @@ md "output\%title%\"
 md "input\%title%\"
 xcopy "template\*" "output\%title%\" /e /i /y >nul
 cls
+echo Would you like to create a 2D or a 3D Moflex video?
+echo A - 2D Moflex Video
+echo B - 3D Moflex Video
+echo.
+choice /C AB /M "Enter the letter of your choice:"
+if ERRORLEVEL 2 goto 3D
+if ERRORLEVEL 1 goto 2D
+:2D
+cls
 echo INFO:
 echo Mobiclip will open with a template graph.
 echo Please Follow ALL Instructions Here Carefully!
@@ -56,10 +65,97 @@ echo.
 echo INFO:
 echo You can Check the Progress on the "Jobs Queue" and "Progress" Tabs.
 echo When finished, close Mobiclip and come back here.
-"tools\3ds_template.mograph"
+"tools\2D_template.mograph"
 cls
 echo Press Enter To Continue...
 pause>nul
+goto moflexdone
+:3D
+cls
+echo Is the 3D video side-by-side or top and bottom?
+echo A - Side-By-Side
+echo B - Top and Bottom
+echo.
+choice /C AB /M "Enter the letter of your choice:"
+if ERRORLEVEL 2 goto 3DTB
+if ERRORLEVEL 1 goto 3DSS
+:3DSS
+cls
+echo INFO:
+echo Mobiclip will open with a template graph.
+echo Please Follow ALL Instructions Here Carefully!
+echo.
+echo Press Enter To Continue...
+pause>nul
+cls
+echo Step 1.
+echo Open up your video files by double-clicking the Red "Video Files" Box.
+echo.
+echo Step 2.
+echo Then Click "Browse" and navigate to your video files.
+echo.
+echo INFO:
+echo Use the +/- button to select multiple files of a given directory. Press OK.
+echo.
+echo Step 3.
+echo Double-click the "Mobiclip Encoder" Box.
+echo.
+echo Step 4.
+echo Select your output directory of your file/s
+echo save to the Input folder: "Moflex Helper\input\%title%\" and press OK.
+echo.
+echo Step 5.
+echo Next press "Queue Job" and click OK.
+echo.
+echo THIS MAY TAKE A LONG TIME! Please Be Patient,
+echo.
+echo INFO:
+echo You can Check the Progress on the "Jobs Queue" and "Progress" Tabs.
+echo When finished, close Mobiclip and come back here.
+"tools\3D_Side-by-Side_Template.mograph"
+cls
+echo Press Enter To Continue...
+pause>nul
+goto moflexdone
+:3DTB
+cls
+echo INFO:
+echo Mobiclip will open with a template graph.
+echo Please Follow ALL Instructions Here Carefully!
+echo.
+echo Press Enter To Continue...
+pause>nul
+cls
+echo Step 1.
+echo Open up your video files by double-clicking the Red "Video Files" Box.
+echo.
+echo Step 2.
+echo Then Click "Browse" and navigate to your video files.
+echo.
+echo INFO:
+echo Use the +/- button to select multiple files of a given directory. Press OK.
+echo.
+echo Step 3.
+echo Double-click the "Mobiclip Encoder" Box.
+echo.
+echo Step 4.
+echo Select your output directory of your file/s
+echo save to the Input folder: "Moflex Helper\input\%title%\" and press OK.
+echo.
+echo Step 5.
+echo Next press "Queue Job" and click OK.
+echo.
+echo THIS MAY TAKE A LONG TIME! Please Be Patient,
+echo.
+echo INFO:
+echo You can Check the Progress on the "Jobs Queue" and "Progress" Tabs.
+echo When finished, close Mobiclip and come back here.
+"tools\3D_Top-and-Bottom_Template.mograph"
+cls
+echo Press Enter To Continue...
+pause>nul
+goto moflexdone
+:moflexdone
 cls
 echo Step 6
 echo In your Input folder ("Moflex Helper\input\%title%\"),
@@ -303,7 +399,7 @@ Pause>nul
 cls
 echo Romfs.bin file is being built. This may take a couple of minutes.
 echo Please wait and do not press anything.
-echo If you see the following meesage then dont worry about it just ignore it:
+echo If you see the following message then dont worry about it just ignore it:
 echo ERROR: open file C:/Moflex Helper/tools/ignore_3dstool.txt failed
 echo Building Romfs....
 echo.
